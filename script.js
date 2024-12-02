@@ -1,6 +1,4 @@
-let year = 2014; // Use 'let' if dynamic updates are needed
-
-const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+const year = 2024; // Use 'let' if dynamic updates are needed
 
 const months = [
     { name: "January", numOfDays: 31, firstDay: new Date(year, 0).getDay() },
@@ -17,59 +15,54 @@ const months = [
     { name: "December", numOfDays: 31, firstDay: new Date(year, 11).getDay() }
 ];
 
+const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
 const rect = { w: 240, h: 36 };
-const svgPadding = { top: 0, left: 0, bottom: 0, right: 20 };
+
 
 const createSVG = () => {
     const svgHolder = document.querySelector("#svg-holder");
     const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
     svg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
-    svg.setAttribute("viewBox", `0 0 ${(rect.w * 12) + svgPadding.left} ${(rect.h * 38) + svgPadding.top}`);
-    svg.style.backgroundColor = "rgba(255, 255, 255, 0.2)";
+    svg.setAttribute("viewBox", `0 0 ${rect.w * 12} ${rect.h * 38}`);
     svgHolder.appendChild(svg);
     return svg;
 };
-
 const svg = createSVG();
 
-const createYearGroup = (year) => {
+
+const createYearGroup = () => {
     const yearGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
-    yearGroup.setAttribute("id", year);
-    yearGroup.setAttribute("class", "year-group");
-    yearGroup.setAttribute("transform", `translate(${svgPadding.left}, ${svgPadding.top})`);
     svg.appendChild(yearGroup);
     return yearGroup;
 };
+const yearGroup = createYearGroup();
 
-const yearGroup = createYearGroup(year);
 
 const createMonthGroup = (monthName, firstDay) => {
-    // Find the index of the current month in the months array
     const monthIndex = months.findIndex(m => m.name === monthName);
     const monthGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
-    monthGroup.setAttribute("id", monthName.toLowerCase());
-    monthGroup.setAttribute("class", "month-group");
     monthGroup.setAttribute("transform", `translate(${rect.w * monthIndex} ${rect.h * firstDay})`);
     return monthGroup;
 };
 
+
 const createMonthHeader = (monthName) => {
     const headerGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
     headerGroup.setAttribute("id", `${monthName.toLowerCase()}-header`);
-    headerGroup.setAttribute("class", "header-group");
-
+    
     const headerGroupRect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
     headerGroupRect.setAttribute("width", rect.w);
     headerGroupRect.setAttribute("height", rect.h);
     headerGroupRect.setAttribute("stroke", "lightgrey");
-    headerGroupRect.setAttribute("stroke-width", "2");
-    headerGroupRect.setAttribute("fill", "white");
+    headerGroupRect.setAttribute("stroke-width", "1");
+    headerGroupRect.setAttribute("fill", "black");
 
     const headerGroupText = document.createElementNS("http://www.w3.org/2000/svg", "text");
     headerGroupText.setAttribute("class", "text");
     headerGroupText.setAttribute("dx", "6");
     headerGroupText.setAttribute("dy", "23");
-    headerGroupText.setAttribute("fill", "black");
+    headerGroupText.setAttribute("fill", "white");
     headerGroupText.setAttribute("text-anchor", "start");
     headerGroupText.textContent = monthName;
 
@@ -97,16 +90,16 @@ const createDayGroup = (monthName, index, isWeekend, currentDayIndex) => {
     dayGroupRectSmall1.setAttribute("height", rect.h);
     dayGroupRectSmall1.setAttribute("stroke", "lightgrey");
     dayGroupRectSmall1.setAttribute("stroke-width", "2");
-    dayGroupRectSmall1.setAttribute("fill", isWeekend ? `hsl(0 0% 0%)` : "white");
+    dayGroupRectSmall1.setAttribute("fill", isWeekend ? `black` : "white");
 
     const rectSmalltext = document.createElementNS("http://www.w3.org/2000/svg", "text");
     rectSmalltext.setAttribute("class", "text");
     rectSmalltext.setAttribute("dx", "6");
     rectSmalltext.setAttribute("dy", "23");
-    rectSmalltext.setAttribute("fill", isWeekend ? "#fff" : "hsl(0 0% 0%)");
+    rectSmalltext.setAttribute("fill", isWeekend ? "white" : "black");
     rectSmalltext.setAttribute("text-anchor", "start");
 
-    const dayName = dayNames[currentDayIndex];
+    const dayName = days[currentDayIndex];
     rectSmalltext.textContent = `${dayName[0]} ${index + 1}`;
 
     dayGroup.appendChild(dayGroupRectBig);

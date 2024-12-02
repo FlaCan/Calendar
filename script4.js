@@ -46,6 +46,7 @@ const createSVG = () => {
 };
 
 const svg = createSVG();
+
 if (!svg) {
     throw new Error("Failed to create SVG element.");
 }
